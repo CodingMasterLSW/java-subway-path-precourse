@@ -1,5 +1,8 @@
 package subway.view;
 
+import java.util.List;
+import subway.domain.CalculateResultDto;
+
 public class OutputView {
 
     private static final String MAIN_MESSAGE = "## 메인 화면";
@@ -10,6 +13,11 @@ public class OutputView {
     private static final String SHORTEST_DISTANCE = "1. 최단 거리";
     private static final String SHORTEST_TIME = "2. 최소 시간";
     private static final String ROLL_BACK = "B. 돌아가기";
+    private static final String CHECK_RESULT_MESSAGE = "## 조회 결과";
+    private static final String INFO_FORMAT = "[INFO] ---";
+    private static final String TOTAL_DISTANCE = "[INFO] 총 거리: %skm";
+    private static final String TOTAL_TIME = "[INFO] 총 소요 시간: %s분";
+    private static final String VISIT_STATION = "[INFO] %s";
 
     private OutputView() {
     }
@@ -31,6 +39,20 @@ public class OutputView {
         printMessage(SHORTEST_TIME);
         printMessage(ROLL_BACK);
         printMessage(BLANK);
+    }
+
+    public void printResult(CalculateResultDto calculateResultDto) {
+        printMessage(INFO_FORMAT);
+        System.out.printf(TOTAL_DISTANCE, calculateResultDto.getDistance());
+        printMessage(BLANK);
+        System.out.printf(TOTAL_TIME, calculateResultDto.getTime());
+        printMessage(BLANK);
+        printMessage(INFO_FORMAT);
+        List<String> stations = calculateResultDto.getStations();
+        for (String station : stations) {
+            System.out.printf(VISIT_STATION, station);
+            printMessage(BLANK);
+        }
     }
 
     public void printErrorMessage(String message) {

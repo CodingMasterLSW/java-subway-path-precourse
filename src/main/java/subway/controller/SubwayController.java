@@ -3,7 +3,6 @@ package subway.controller;
 import static subway.exception.ErrorMessage.NOT_EXIST_STATION;
 import static subway.exception.ErrorMessage.START_END_IS_SAME;
 
-import java.util.List;
 import java.util.function.Supplier;
 import subway.domain.CalculateResultDto;
 import subway.domain.StationRepository;
@@ -46,15 +45,12 @@ public class SubwayController {
         if (specificUserInput.equals("1")) {
             CalculateResultDto calculateResultDto = subwayService.calculateDistance(false, startStation,
                     endStation);
-            System.out.println(calculateResultDto.getDistance());
-            System.out.println(calculateResultDto.getTime());
-            List<String> stations = calculateResultDto.getStations();
-            for (String station : stations) {
-                System.out.println(station);
-            }
+            outputView.printResult(calculateResultDto);
         }
         if (specificUserInput.equals("2")) {
-            subwayService.calculateDistance(true, startStation, endStation);
+            CalculateResultDto calculateResultDto = subwayService.calculateDistance(true,
+                    startStation, endStation);
+            outputView.printResult(calculateResultDto);
         }
     }
 
