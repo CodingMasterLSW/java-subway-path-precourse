@@ -2,22 +2,22 @@ package subway.domain;
 
 public class Section {
 
-    private final String startString;
-    private final String endString;
+    private final String startStation;
+    private final String endStation;
     private final Cost cost;
 
-    public Section(String startString, String endString, Cost cost) {
-        this.startString = startString;
-        this.endString = endString;
+    public Section(String startStation, String endStation, Cost cost) {
+        this.startStation = startStation;
+        this.endStation = endStation;
         this.cost = cost;
     }
 
-    public String getStartString() {
-        return startString;
+    public String getStartStation() {
+        return startStation;
     }
 
-    public String getEndString() {
-        return endString;
+    public String getEndStation() {
+        return endStation;
     }
 
     public Cost getCost() {
