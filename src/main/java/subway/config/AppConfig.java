@@ -2,6 +2,8 @@ package subway.config;
 
 import java.util.Scanner;
 import subway.controller.SubwayController;
+import subway.domain.LineRepository;
+import subway.domain.StationRepository;
 import subway.service.SubwayService;
 import subway.view.InputView;
 import subway.view.OutputView;
