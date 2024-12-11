@@ -20,6 +20,8 @@ public class SubwayController {
     public void start() {
         outputView.startMessage();
         String userInput = retryOnInvalidInput(() -> inputView.chooseFunction());
+        outputView.courseMessage();
+        String specificUserInput = retryOnInvalidInput(() -> inputView.chooseSpecificFunction());
     }
 
     private <T> T retryOnInvalidInput(Supplier<T> input) {

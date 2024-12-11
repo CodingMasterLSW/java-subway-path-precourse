@@ -32,6 +32,13 @@ public class InputView {
         return userInput;
     }
 
+    public String chooseSpecificFunction() {
+        printMessage(CHOOSE_MESSAGE);
+        String userInput = userInput();
+        validateChooseInputContainRollBack(userInput);
+        return userInput;
+    }
+
     public void printMessage(String message) {
         System.out.println(message);
     }
@@ -44,6 +51,13 @@ public class InputView {
 
     private void validateChooseInput(String userInput) {
         if (userInput.equals("1") || userInput.equals("Q")) {
+            return;
+        }
+        throw new IllegalArgumentException(INVALID_INPUT.getMessage());
+    }
+
+    private void validateChooseInputContainRollBack(String userInput) {
+        if (userInput.equals("1") || userInput.equals("2") || userInput.equals("B")) {
             return;
         }
         throw new IllegalArgumentException(INVALID_INPUT.getMessage());
