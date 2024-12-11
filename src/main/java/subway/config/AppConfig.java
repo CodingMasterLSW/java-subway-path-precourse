@@ -1,5 +1,6 @@
 package subway.config;
 
+import java.util.Scanner;
 import subway.controller.SubwayController;
 import subway.service.SubwayService;
 import subway.view.InputView;
@@ -10,8 +11,8 @@ public class AppConfig {
     private AppConfig() {
     }
 
-    public static SubwayController createController() {
-        return new SubwayController(InputView.create(), OutputView.create(), createService());
+    public static SubwayController createController(Scanner scanner) {
+        return new SubwayController(InputView.create(scanner), OutputView.create(), createService());
     }
 
     public static SubwayService createService() {

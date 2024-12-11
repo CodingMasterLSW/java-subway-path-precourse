@@ -16,4 +16,9 @@ public class SubwayController {
         this.subwayService = subwayService;
     }
 
+    public void start() {
+        outputView.startMessage();
+        inputView.chooseFunction();
+    }
+
 }
