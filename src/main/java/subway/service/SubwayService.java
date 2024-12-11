@@ -29,7 +29,10 @@ public class SubwayService {
         graphAddStation(graph);
         DijkstraShortestPath dijkstraShortestPath = decideDijkstraShortestPath(isTime, graph, sections);
         GraphPath path = dijkstraShortestPath.getPath(startStation, endStation);
-        return createCalculateResultDto(path);
+        if (isTime) {
+            return createCalculateMinDistanceResultDto(path);
+        }
+        return createCalculateMinTimeResultDto(path);
     }
 
     private DijkstraShortestPath decideDijkstraShortestPath(boolean isTime,
@@ -43,11 +46,18 @@ public class SubwayService {
         return dijkstraShortestPath;
     }
 
-    private CalculateResultDto createCalculateResultDto(GraphPath path) {
+    private CalculateResultDto createCalculateMinTimeResultDto(GraphPath path) {
         List<String> shortestPath = path.getVertexList();
-        int weight = (int) path.getWeight();
+        int distance = (int) path.getWeight();
         int time = calculateTime(shortestPath);
-        return CalculateResultDto.toDto(weight, time, shortestPath);
+        return CalculateResultDto.toDto(distance, time, shortestPath);
+    }
+
+    private CalculateResultDto createCalculateMinDistanceResultDto(GraphPath path) {
+        List<String> shortestPath = path.getVertexList();
+        int distance = calculateDistance(shortestPath);
+        int time = (int) path.getWeight();
+        return CalculateResultDto.toDto(distance, time, shortestPath);
     }
 
     private void graphAddStation(WeightedMultigraph<String, DefaultWeightedEdge> graph) {
@@ -81,6 +91,16 @@ public class SubwayService {
             time += section.getCost().getTime();
         }
         return time;
+    }
+
+    private int calculateDistance(List<String> shortestPath) {
+        int distance = 0;
+        for (int i=0; i<shortestPath.size()-1; i++) {
+            Section section = SectionRepository.findSectionByStationName(
+                    shortestPath.get(i), shortestPath.get(i + 1));
+             distance += section.getCost().getDistance();
+        }
+        return distance;
     }
     
     private void initStation() {
