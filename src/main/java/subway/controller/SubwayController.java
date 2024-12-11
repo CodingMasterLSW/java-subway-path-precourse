@@ -23,14 +23,21 @@ public class SubwayController {
     }
 
     public void init() {
-        subwayService.setup();
+        subwayService.init();
     }
 
     public void start() {
+
         outputView.startMessage();
         String userInput = retryOnInvalidInput(() -> inputView.chooseFunction());
+        if (userInput.equals("Q")) {
+            return;
+        }
         outputView.courseMessage();
         String specificUserInput = retryOnInvalidInput(() -> inputView.chooseSpecificFunction());
+        if (userInput.equals("B")) {
+            return;
+        }
         String startStation = handleStartStation();
         String endStation = handleEndStation(startStation);
     }
