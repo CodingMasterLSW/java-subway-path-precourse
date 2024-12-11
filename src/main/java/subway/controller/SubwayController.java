@@ -44,7 +44,7 @@ public class SubwayController {
         String endStation = handleEndStation(startStation);
 
         if (specificUserInput.equals("1")) {
-            CalculateResultDto calculateResultDto = subwayService.minimumDistance(startStation,
+            CalculateResultDto calculateResultDto = subwayService.calculateDistance(false, startStation,
                     endStation);
             System.out.println(calculateResultDto.getDistance());
             System.out.println(calculateResultDto.getTime());
@@ -54,10 +54,8 @@ public class SubwayController {
             }
         }
         if (specificUserInput.equals("2")) {
-            subwayService.minimumTime(startStation, endStation);
+            subwayService.calculateDistance(true, startStation, endStation);
         }
-
-
     }
 
     private String handleStartStation() {

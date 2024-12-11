@@ -23,24 +23,54 @@ public class SubwayService {
         initLineAndSectionAnd();
     }
 
-    public CalculateResultDto minimumDistance(String startStation, String endStation) {
-        WeightedMultigraph<String, DefaultWeightedEdge> graph = new WeightedMultigraph<>(
-                DefaultWeightedEdge.class);
+    public CalculateResultDto calculateDistance(boolean isTime, String startStation, String endStation) {
+        WeightedMultigraph<String, DefaultWeightedEdge> graph = new WeightedMultigraph<>(DefaultWeightedEdge.class);
         List<Section> sections = SectionRepository.getSections();
-        List<Station> stations = StationRepository.stations();
-        for (Station station : stations) {
-            graph.addVertex(station.getName());
-        }
-
-        for (Section section : sections) {
-            graph.setEdgeWeight(graph.addEdge(section.getStartStation(), section.getEndStation()), section.getCost().getDistance());
-        }
-        DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
+        graphAddStation(graph);
+        DijkstraShortestPath dijkstraShortestPath = decideDijkstraShortestPath(isTime, graph, sections);
         GraphPath path = dijkstraShortestPath.getPath(startStation, endStation);
+        return createCalculateResultDto(path);
+    }
+
+    private DijkstraShortestPath decideDijkstraShortestPath(boolean isTime,
+            WeightedMultigraph<String, DefaultWeightedEdge> graph, List<Section> sections) {
+        DijkstraShortestPath dijkstraShortestPath;
+        if (isTime) {
+            dijkstraShortestPath = addGraphByTime(graph, sections);
+            return dijkstraShortestPath;
+        }
+        dijkstraShortestPath = addGraphByDistance(graph, sections);
+        return dijkstraShortestPath;
+    }
+
+    private CalculateResultDto createCalculateResultDto(GraphPath path) {
         List<String> shortestPath = path.getVertexList();
         int weight = (int) path.getWeight();
         int time = calculateTime(shortestPath);
         return CalculateResultDto.toDto(weight, time, shortestPath);
+    }
+
+    private void graphAddStation(WeightedMultigraph<String, DefaultWeightedEdge> graph) {
+        List<Station> stations = StationRepository.stations();
+        for (Station station : stations) {
+            graph.addVertex(station.getName());
+        }
+    }
+
+    private DijkstraShortestPath addGraphByTime(WeightedMultigraph<String, DefaultWeightedEdge> graph, List<Section> sections) {
+        for (Section section : sections) {
+            graph.setEdgeWeight(graph.addEdge(section.getStartStation(), section.getEndStation()), section.getCost().getTime());
+        }
+        DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
+        return dijkstraShortestPath;
+    }
+
+    private DijkstraShortestPath addGraphByDistance(WeightedMultigraph<String, DefaultWeightedEdge> graph, List<Section> sections) {
+        for (Section section : sections) {
+            graph.setEdgeWeight(graph.addEdge(section.getStartStation(), section.getEndStation()), section.getCost().getDistance());
+        }
+        DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
+        return dijkstraShortestPath;
     }
 
     private int calculateTime(List<String> shortestPath) {
@@ -51,10 +81,6 @@ public class SubwayService {
             time += section.getCost().getTime();
         }
         return time;
-    }
-
-    public void minimumTime(String startStation, String endStation) {
-
     }
     
     private void initStation() {
