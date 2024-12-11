@@ -1,5 +1,6 @@
 package subway.view;
 
+import static subway.exception.ErrorMessage.INVALID_INPUT;
 import static subway.exception.ErrorMessage.NOT_BLANK_INPUT;
 
 import java.util.Scanner;
@@ -25,9 +26,10 @@ public class InputView {
     }
 
     public String chooseFunction() {
-        printMessage(BLANK);
         printMessage(CHOOSE_MESSAGE);
-        return userInput();
+        String userInput = userInput();
+        validateChooseInput(userInput);
+        return userInput;
     }
 
     public void printMessage(String message) {
@@ -38,6 +40,13 @@ public class InputView {
         if (userInput.isBlank() || userInput == null) {
             throw new IllegalArgumentException(NOT_BLANK_INPUT.getMessage());
         }
+    }
+
+    private void validateChooseInput(String userInput) {
+        if (userInput.equals("1") || userInput.equals("Q")) {
+            return;
+        }
+        throw new IllegalArgumentException(INVALID_INPUT.getMessage());
     }
 
 }
