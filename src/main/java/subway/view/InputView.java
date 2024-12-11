@@ -47,6 +47,11 @@ public class InputView {
         return userInput();
     }
 
+    public String inputEndStation() {
+        printMessage(END_STATION_MESSAGE);
+        return userInput();
+    }
+
     public void printMessage(String message) {
         System.out.println(message);
     }
