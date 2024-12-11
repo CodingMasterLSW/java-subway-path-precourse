@@ -20,6 +20,17 @@ public class StationRepository {
         return stations.removeIf(station -> Objects.equals(station.getName(), name));
     }
 
+    public static boolean hasStation(String name) {
+        Station status = stations.stream()
+                .filter(station -> station.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+        if (status == null) {
+            return false;
+        }
+        return true;
+    }
+
     public static void deleteAll() {
         stations.clear();
     }

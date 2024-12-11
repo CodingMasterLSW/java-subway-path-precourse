@@ -9,6 +9,9 @@ public class InputView {
 
     private static final String BLANK = "";
     private static final String CHOOSE_MESSAGE = "## 원하는 기능을 선택하세요.";
+    private static final String START_STATION_MESSAGE = "## 출발역을 입력하세요.";
+    private static final String END_STATION_MESSAGE = "## 도착역을 입력하세요.";
+
     private final Scanner scanner;
 
     private InputView(Scanner scanner) {
@@ -37,6 +40,11 @@ public class InputView {
         String userInput = userInput();
         validateChooseInputContainRollBack(userInput);
         return userInput;
+    }
+
+    public String inputStartStation() {
+        printMessage(START_STATION_MESSAGE);
+        return userInput();
     }
 
     public void printMessage(String message) {
